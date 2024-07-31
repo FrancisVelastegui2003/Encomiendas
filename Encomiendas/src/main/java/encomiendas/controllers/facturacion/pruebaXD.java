@@ -10,6 +10,4 @@ package encomiendas.controllers.facturacion;
  */
 public class pruebaXD {
     
-    // Puto el que lo lea :p
-    
 }
