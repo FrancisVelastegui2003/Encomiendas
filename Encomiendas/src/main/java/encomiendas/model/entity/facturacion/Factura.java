@@ -1,35 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package encomiendas.model.entity.facturacion;
 
 import encomiendas.model.entity.encomiendas.Encomienda;
 import encomiendas.model.entity.usuarios.Usuario;
 import java.time.LocalDate;
 
-/**
- *
- * @author Lenovo
- */
 public class Factura {
     private Integer idFactura;
     private LocalDate fecha;
     private Double impuestos;
     private Double descuentos;
     private Double total;
+    private Encomienda encomienda;  // Relación con la Encomienda facturada
     
-    public Factura(){
-        
-    }
-    
-    public Factura(Integer idFactura, LocalDate fecha, Double impuestos, Double descuentos, Double total) {
+    public Factura() {}
+
+    public Factura(Integer idFactura, LocalDate fecha, Double impuestos, Double descuentos, Double total, Encomienda encomienda) {
         this.idFactura = idFactura;
         this.fecha = fecha;
         this.impuestos = impuestos;
         this.descuentos = descuentos;
         this.total = total;
+        this.encomienda = encomienda;
     }
+
+    // Getters y Setters
 
     public Integer getIdFactura() {
         return idFactura;
@@ -70,13 +64,16 @@ public class Factura {
     public void setTotal(Double total) {
         this.total = total;
     }
+
+    public Encomienda getEncomienda() {
+        return encomienda;
+    }
+
+    public void setEncomienda(Encomienda encomienda) {
+        this.encomienda = encomienda;
+    }
     
-    /**
-     * Permite crear una factura
-     * @param encomienda    La encomienda
-     * @param cliente       El cliente
-     * @return              La factura
-     */
+    // Método para crear una factura basada en una encomienda y un cliente
     public static Factura crearFactura(Encomienda encomienda, Usuario cliente) {
         Factura factura = new Factura();
         factura.fecha = LocalDate.now();
@@ -84,34 +81,22 @@ public class Factura {
         factura.descuentos = calcularDescuentos(encomienda, cliente);
         factura.total = encomienda.calcularPrecioTotal();
         factura.calcularTotal();
+        factura.setEncomienda(encomienda);
         return factura;
     }
-    
-    /**
-     * Permite calcular el total a pagar en la factura
-     */
+
+    // Método para calcular el total después de aplicar impuestos y descuentos
     public void calcularTotal() {
-        // Asumiendo que el total es el precio calculado con impuestos y descuentos aplicados
         this.total = this.total + this.impuestos - this.descuentos;
     }
-    
-    /**
-     * Permite calcular los impuestos aplicables a una encomienda
-     * @param encomienda    La encomienda
-     * @return              Impuestos aplicables
-     */
+
+    // Método para calcular los impuestos basados en la encomienda
     private static Double calcularImpuestos(Encomienda encomienda) {
-        return encomienda.calcularPrecioTotal() * 0.12; // 12% de impuestos (IVA)
+        return encomienda.calcularPrecioTotal() * 0.12; // 12% de impuestos
     }
-    
-    /**
-     * Permite calcular lo descuentos aplicacbles, en este caso se asume que 
-     * puede ser por tipo de cliente o tipo de encomienda
-     * @param encomienda    La encomienda
-     * @param cliente       El cliente
-     * @return              Descuento aplicable
-     */
+
+    // Método para calcular descuentos, esto se puede personalizar según la lógica de negocio
     private static Double calcularDescuentos(Encomienda encomienda, Usuario cliente) {
-        return 0.0; // No hay descuentos aplicables por defecto
+        return 0.0; // No hay descuentos por defecto
     }
 }
