@@ -10,17 +10,21 @@ public class Factura {
     private Double impuestos;
     private Double descuentos;
     private Double total;
-    private Encomienda encomienda;  // Relación con la Encomienda facturada
+    private Encomienda id_encomienda; // conexion con encomienda
+    private Integer cedula_cliente;
+    private boolean estado_factura;
     
     public Factura() {}
 
-    public Factura(Integer idFactura, LocalDate fecha, Double impuestos, Double descuentos, Double total, Encomienda encomienda) {
+    public Factura(Integer idFactura, LocalDate fecha, Double impuestos, Double descuentos, Double total, Encomienda encomienda, Integer cedula_cliente, boolean estado_factura) {
         this.idFactura = idFactura;
         this.fecha = fecha;
         this.impuestos = impuestos;
         this.descuentos = descuentos;
         this.total = total;
-        this.encomienda = encomienda;
+        this.id_encomienda = encomienda;
+        this.cedula_cliente = cedula_cliente;
+        this.estado_factura = estado_factura;
     }
 
     // Getters y Setters
@@ -66,12 +70,29 @@ public class Factura {
     }
 
     public Encomienda getEncomienda() {
-        return encomienda;
+        return id_encomienda;
     }
 
     public void setEncomienda(Encomienda encomienda) {
-        this.encomienda = encomienda;
+        this.id_encomienda = encomienda;
     }
+
+    public Integer getCedula_cliente() {
+        return cedula_cliente;
+    }
+
+    public void setCedula_cliente(Integer cedula_cliente) {
+        this.cedula_cliente = cedula_cliente;
+    }
+
+    public boolean isEstado_factura() {
+        return estado_factura;
+    }
+
+    public void setEstado_factura(boolean estado_factura) {
+        this.estado_factura = estado_factura;
+    }
+    
     
     // Método para crear una factura basada en una encomienda y un cliente
     public static Factura crearFactura(Encomienda encomienda, Usuario cliente) {
@@ -92,10 +113,10 @@ public class Factura {
 
     // Método para calcular los impuestos basados en la encomienda
     private static Double calcularImpuestos(Encomienda encomienda) {
-        return encomienda.calcularPrecioTotal() * 0.12; // 12% de impuestos
+        return encomienda.calcularPrecioTotal() * 0.15; // 15% de impuestos
     }
 
-    // Método para calcular descuentos, esto se puede personalizar según la lógica de negocio
+    // Método para calcular descuentos
     private static Double calcularDescuentos(Encomienda encomienda, Usuario cliente) {
         return 0.0; // No hay descuentos por defecto
     }

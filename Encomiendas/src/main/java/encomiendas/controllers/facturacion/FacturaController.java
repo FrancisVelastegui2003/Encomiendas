@@ -1,6 +1,8 @@
 package encomiendas.controllers.facturacion;
 
 import encomiendas.model.entity.facturacion.Factura;
+import encomiendas.model.entity.encomiendas.Encomienda;
+import encomiendas.model.entity.usuarios.Usuario;
 import encomiendas.services.facturacion.FacturaService;
 
 import java.sql.SQLException;
@@ -29,18 +31,21 @@ public class FacturaController {
         facturaService.saveFactura(factura);
     }
 
-    // Eliminar una factura
+    // Eliminar una factura (no implementado)
     public void eliminarFactura(Integer id) throws SQLException {
-        facturaService.deleteFactura(id);
+        throw new UnsupportedOperationException("Eliminación de facturas no soportada.");
     }
 
-    // Actualizar una factura existente
+    // Actualizar una factura existente (no implementado)
     public void actualizarFactura(Integer id, Factura factura) throws SQLException {
-        facturaService.updateFactura(id, factura);
+        throw new UnsupportedOperationException("Actualización de facturas no soportada.");
     }
-    
-    // CREEADO POR DEFECTO (MEJORAR LA LÓGICA)
-    public void generarFactura(encomiendas.views.facturacion.Factura factura) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    // Nueva lógica para manejar la generación de facturas desde la vista
+    public void generarFacturaDesdeVista(Encomienda encomienda, Usuario cliente) throws SQLException {
+        // Crear la factura utilizando los datos proporcionados
+        Factura factura = Factura.crearFactura(encomienda, cliente);
+        // Guardar la factura en la base de datos
+        generarFactura(factura);
     }
 }

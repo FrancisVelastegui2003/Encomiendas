@@ -29,13 +29,13 @@ public class FacturaService {
         facturaRepository.save(factura);
     }
 
-    // Eliminar una factura
+    // Eliminar una factura (no implementado)
     public void deleteFactura(Integer id) throws SQLException {
-        facturaRepository.delete(id);
+        throw new UnsupportedOperationException("Eliminación de facturas no soportada.");
     }
 
-    // Actualizar una factura
+    // Actualizar una factura (no implementado)
     public void updateFactura(Integer id, Factura factura) throws SQLException {
-        facturaRepository.update(id, factura);
+        throw new UnsupportedOperationException("Actualización de facturas no soportada.");
     }
 }

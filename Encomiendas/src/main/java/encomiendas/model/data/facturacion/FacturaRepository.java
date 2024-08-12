@@ -1,7 +1,6 @@
 package encomiendas.model.data.facturacion;
 
 import encomiendas.model.data.Repository;
-import encomiendas.model.data.encomiendas.EncomiendaRepository;
 import encomiendas.model.entity.facturacion.Factura;
 import encomiendas.model.entity.encomiendas.Encomienda;
 
@@ -47,36 +46,17 @@ public class FacturaRepository implements Repository<Factura> {
 
     @Override
     public void save(Factura factura) throws SQLException {
-        String sql = "INSERT INTO factura (fecha, impuestos, descuentos, total, id_encomienda) " +
-                     "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO factura (id_factura, fecha, impuestos, descuentos, total, id_encomienda, cedula_cliente, estado_factura) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setDate(1, java.sql.Date.valueOf(factura.getFecha()));
-            myStatement.setDouble(2, factura.getImpuestos());
-            myStatement.setDouble(3, factura.getDescuentos());
-            myStatement.setDouble(4, factura.getTotal());
-            //myStatement.setInt(5, factura.getEncomienda().getIdEncomienda());
-            myStatement.executeUpdate();
-        }
-    }
-
-    @Override
-    public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM factura WHERE id_factura = ?";
-        try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setInt(1, id);
-            myStatement.executeUpdate();
-        }
-    }
-
-    @Override
-    public void update(Integer id, Factura factura) throws SQLException {
-        String sql = "UPDATE factura SET fecha = ?, impuestos = ?, descuentos = ?, total = ? WHERE id_factura = ?";
-        try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setDate(1, java.sql.Date.valueOf(factura.getFecha()));
-            myStatement.setDouble(2, factura.getImpuestos());
-            myStatement.setDouble(3, factura.getDescuentos());
-            myStatement.setDouble(4, factura.getTotal());
-            myStatement.setInt(5, id);
+            myStatement.setString(1, factura.getIdFactura().toString());
+            myStatement.setDate(2, java.sql.Date.valueOf(factura.getFecha()));
+            myStatement.setDouble(3, factura.getImpuestos());
+            myStatement.setDouble(4, factura.getDescuentos());
+            myStatement.setDouble(5, factura.getTotal());
+           // myStatement.setInt(6, factura.getEncomienda().getIdEncomienda());
+            myStatement.setInt(7, factura.getCedula_cliente());
+            myStatement.setBoolean(8, factura.isEstado_factura());
             myStatement.executeUpdate();
         }
     }
@@ -89,18 +69,42 @@ public class FacturaRepository implements Repository<Factura> {
         factura.setImpuestos(myRs.getDouble("impuestos"));
         factura.setDescuentos(myRs.getDouble("descuentos"));
         factura.setTotal(myRs.getDouble("total"));
-        
-        
-        // COMPLETAR PARA EL FUNIONAMIENTO FINAL:
+
+        // Obtener la encomienda relacionada
         Encomienda encomienda = obtenerEncomienda(myRs.getInt("id_encomienda"));
         factura.setEncomienda(encomienda);
+
+        factura.setCedula_cliente(myRs.getInt("cedula_cliente"));
+        factura.setEstado_factura(myRs.getBoolean("estado_factura"));
+
         return factura;
     }
 
     // Método para obtener una Encomienda relacionada a una factura
-    // MEJORAR 
     private Encomienda obtenerEncomienda(int idEncomienda) throws SQLException {
-        EncomiendaRepository encomiendaRepository = new EncomiendaRepository(myConn);
-        return encomiendaRepository.getById(idEncomienda);
+        String sql = "SELECT * FROM encomienda WHERE id_encomienda = ?";
+        Encomienda encomienda = null;
+
+        try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
+            myStatement.setInt(1, idEncomienda);
+            ResultSet myRs = myStatement.executeQuery();
+
+            if (myRs.next()) {
+               // encomienda = new Encomienda();
+               // encomienda.setIdEncomienda(myRs.getInt("id_encomienda"));
+               // encomienda.setPrecioEncomienda(myRs.getFloat("precio_encomienda"));
+            }
+        }
+        return encomienda;
+    }
+
+    @Override
+    public void delete(Integer id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void update(Integer id, Factura t) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

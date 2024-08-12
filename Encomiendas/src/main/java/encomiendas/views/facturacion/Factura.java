@@ -20,11 +20,6 @@ import java.sql.SQLException;
  * @author Lenovo
  */
 public class Factura extends javax.swing.JPanel {
-
-    private static Factura crearFactura(Encomienda encomienda, Usuario cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
     
     private FacturaController facturaController;
     private Connection myConn; // Conexión a la base de datos
@@ -128,16 +123,12 @@ public class Factura extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 try {
-            // Obtener la encomienda y el cliente (completar)
-            Encomienda encomienda = obtenerEncomienda(); // Método para obtener la encomienda
-            Usuario cliente = obtenerCliente(); // Método para obtener el cliente
-
-            // Crear la factura utilizando el controlador
+            // Obtener la encomienda y el cliente 
+            Encomienda encomienda = obtenerEncomienda(); 
+            Usuario cliente = obtenerCliente();
             
-            // Comprobar el funcionamiento sin errores
-            
-            Factura factura = Factura.crearFactura(encomienda, cliente);
-            facturaController.generarFactura(factura); // Guardar la factura en la base de datos
+             // Llamar al controlador para generar la factura
+            facturaController.generarFacturaDesdeVista(encomienda, cliente);
 
             // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(this, "Factura generada y guardada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -148,23 +139,17 @@ try {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-// Implementar la lógica para obtener la encomienda y el cliente
     private Encomienda obtenerEncomienda() throws SQLException {
-        // EJEMPLO: 
         EncomiendaRepository encomiendaRepository = new EncomiendaRepository(myConn);
-        Encomienda encomienda = null;
-        encomienda = encomiendaRepository.getById(1); // Suponiendo la obtencion de encomienda por ID
-        return encomienda;
+        return encomiendaRepository.getById(1); // Suponiendo la obtención de encomienda por ID
     }
 
     private Usuario obtenerCliente() {
-        // COMPLETAR
-        // EJEMPLO:
+        // Implementar la lógica para obtener el cliente real
         Usuario cliente = new Usuario();
-        //cliente.setId(1);
+        //cliente.setCedula(1); // Suponiendo que obtienes el cliente por cédula
         return cliente;
     }
-
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
