@@ -20,7 +20,7 @@ public class FacturaService {
     }
 
     // Obtener una factura por su ID
-    public Factura getFacturaById(Integer id) throws SQLException {
+    public Factura getFacturaById(String id) throws SQLException {
         return facturaRepository.getById(id);
     }
 
@@ -30,12 +30,12 @@ public class FacturaService {
     }
 
     // Eliminar una factura (no implementado)
-    public void deleteFactura(Integer id) throws SQLException {
+    public void deleteFactura(String id) throws SQLException {
         throw new UnsupportedOperationException("Eliminación de facturas no soportada.");
     }
 
     // Actualizar una factura (no implementado)
-    public void updateFactura(Integer id, Factura factura) throws SQLException {
+    public void updateFactura(String id, Factura factura) throws SQLException {
         throw new UnsupportedOperationException("Actualización de facturas no soportada.");
     }
 }

@@ -11,6 +11,7 @@ import encomiendas.model.entity.encomiendas.Encomienda;
 import encomiendas.model.entity.encomiendas.Paquete;
 import encomiendas.services.encomiendas.EncomiendaService;
 import encomiendas.services.encomiendas.PaqueteService;
+import encomiendas.views.facturacion.JFFactura;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,7 @@ public class JFEncomiendas extends javax.swing.JFrame {
         btnGuardarEncomienda = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnVerPaquetes = new javax.swing.JButton();
+        btnFacturacion = new javax.swing.JButton();
         panelDatos = new javax.swing.JPanel();
         panelEntregaDomicilio = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -157,6 +159,13 @@ public class JFEncomiendas extends javax.swing.JFrame {
             }
         });
 
+        btnFacturacion.setText("Facturación");
+        btnFacturacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelOpcionesLayout = new javax.swing.GroupLayout(panelOpciones);
         panelOpciones.setLayout(panelOpcionesLayout);
         panelOpcionesLayout.setHorizontalGroup(
@@ -168,7 +177,8 @@ public class JFEncomiendas extends javax.swing.JFrame {
                     .addComponent(btnGuardarEncomienda, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                     .addComponent(btnAgregarPaquete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCrearEncomienda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFacturacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelOpcionesLayout.setVerticalGroup(
@@ -183,11 +193,13 @@ public class JFEncomiendas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCrearEncomienda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnFacturacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel2.add(panelOpciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 190, 240));
+        jPanel2.add(panelOpciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 190, 260));
 
         panelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder("Encomienda"));
 
@@ -649,6 +661,14 @@ public class JFEncomiendas extends javax.swing.JFrame {
         encomiendaController.mostrarEncomienda((DefaultTableModel) this.jTEncomiendas.getModel());
     }//GEN-LAST:event_btnRestablecerActionPerformed
 
+    private void btnFacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturacionActionPerformed
+            // Crea una instancia de la interfaz JFFactura
+    JFFactura facturaFrame = new JFFactura();
+    
+    // Hace visible la interfaz de facturación
+    facturaFrame.setVisible(true);
+    }//GEN-LAST:event_btnFacturacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -690,6 +710,7 @@ public class JFEncomiendas extends javax.swing.JFrame {
     public javax.swing.JButton btnAgregarPaquete;
     public javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnCrearEncomienda;
+    public javax.swing.JButton btnFacturacion;
     public javax.swing.JButton btnFiltrar;
     public javax.swing.JButton btnGuardarEncomienda;
     private javax.swing.JButton btnRestablecer;

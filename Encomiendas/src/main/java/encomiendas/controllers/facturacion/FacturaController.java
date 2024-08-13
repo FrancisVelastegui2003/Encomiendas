@@ -22,7 +22,7 @@ public class FacturaController {
     }
 
     // Obtener una factura por ID
-    public Factura obtenerFacturaPorId(Integer id) throws SQLException {
+    public Factura obtenerFacturaPorId(String id) throws SQLException {
         return facturaService.getFacturaById(id);
     }
 
@@ -31,21 +31,10 @@ public class FacturaController {
         facturaService.saveFactura(factura);
     }
 
-    // Eliminar una factura (no implementado)
-    public void eliminarFactura(Integer id) throws SQLException {
-        throw new UnsupportedOperationException("Eliminación de facturas no soportada.");
-    }
-
-    // Actualizar una factura existente (no implementado)
-    public void actualizarFactura(Integer id, Factura factura) throws SQLException {
-        throw new UnsupportedOperationException("Actualización de facturas no soportada.");
-    }
-
     // Nueva lógica para manejar la generación de facturas desde la vista
-    public void generarFacturaDesdeVista(Encomienda encomienda, Usuario cliente) throws SQLException {
-        // Crear la factura utilizando los datos proporcionados
+    public Factura generarFacturaDesdeVista(Encomienda encomienda, Usuario cliente) throws SQLException {
         Factura factura = Factura.crearFactura(encomienda, cliente);
-        // Guardar la factura en la base de datos
         generarFactura(factura);
+        return factura;
     }
 }

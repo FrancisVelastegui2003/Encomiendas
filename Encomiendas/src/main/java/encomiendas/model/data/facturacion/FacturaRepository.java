@@ -3,6 +3,9 @@ package encomiendas.model.data.facturacion;
 import encomiendas.model.data.Repository;
 import encomiendas.model.entity.facturacion.Factura;
 import encomiendas.model.entity.encomiendas.Encomienda;
+import encomiendas.model.data.encomiendas.EncomiendaRepository;
+import encomiendas.model.entity.usuarios.Usuario;
+import encomiendas.model.data.usuarios.ClienteRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,9 +14,13 @@ import java.util.List;
 public class FacturaRepository implements Repository<Factura> {
 
     private Connection myConn;
+    private EncomiendaRepository encomiendaRepository;
+    private ClienteRepository clienteRepository;
 
     public FacturaRepository(Connection myConn) {
         this.myConn = myConn;
+        this.encomiendaRepository = new EncomiendaRepository(myConn);
+        this.clienteRepository = new ClienteRepository(myConn);
     }
 
     @Override
@@ -30,12 +37,11 @@ public class FacturaRepository implements Repository<Factura> {
         return facturas;
     }
 
-    @Override
-    public Factura getById(Integer id) throws SQLException {
+    public Factura getById(String id) throws SQLException {
         Factura factura = null;
         String sql = "SELECT * FROM factura WHERE id_factura = ?";
         try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setInt(1, id);
+            myStatement.setString(1, id);
             ResultSet myRs = myStatement.executeQuery();
             if (myRs.next()) {
                 factura = createFactura(myRs);
@@ -49,13 +55,13 @@ public class FacturaRepository implements Repository<Factura> {
         String sql = "INSERT INTO factura (id_factura, fecha, impuestos, descuentos, total, id_encomienda, cedula_cliente, estado_factura) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setString(1, factura.getIdFactura().toString());
+            myStatement.setString(1, factura.getIdFactura());
             myStatement.setDate(2, java.sql.Date.valueOf(factura.getFecha()));
             myStatement.setDouble(3, factura.getImpuestos());
             myStatement.setDouble(4, factura.getDescuentos());
             myStatement.setDouble(5, factura.getTotal());
-           // myStatement.setInt(6, factura.getEncomienda().getIdEncomienda());
-            myStatement.setInt(7, factura.getCedula_cliente());
+            myStatement.setInt(6, factura.getEncomienda().getIdEncomienda());
+            myStatement.setString(7, factura.getCedula_cliente());
             myStatement.setBoolean(8, factura.isEstado_factura());
             myStatement.executeUpdate();
         }
@@ -64,38 +70,23 @@ public class FacturaRepository implements Repository<Factura> {
     // Método para crear una Factura a partir del ResultSet de la base de datos
     private Factura createFactura(ResultSet myRs) throws SQLException {
         Factura factura = new Factura();
-        factura.setIdFactura(myRs.getInt("id_factura"));
+        factura.setIdFactura(myRs.getString("id_factura"));
         factura.setFecha(myRs.getDate("fecha").toLocalDate());
         factura.setImpuestos(myRs.getDouble("impuestos"));
         factura.setDescuentos(myRs.getDouble("descuentos"));
         factura.setTotal(myRs.getDouble("total"));
 
         // Obtener la encomienda relacionada
-        Encomienda encomienda = obtenerEncomienda(myRs.getInt("id_encomienda"));
+        Encomienda encomienda = encomiendaRepository.getById(myRs.getInt("id_encomienda"));
         factura.setEncomienda(encomienda);
 
-        factura.setCedula_cliente(myRs.getInt("cedula_cliente"));
+        // Obtener el cliente relacionado
+        Usuario cliente = clienteRepository.getById(myRs.getString("cedula_cliente"));
+        factura.setCedula_cliente(cliente.getCedula());
+
         factura.setEstado_factura(myRs.getBoolean("estado_factura"));
 
         return factura;
-    }
-
-    // Método para obtener una Encomienda relacionada a una factura
-    private Encomienda obtenerEncomienda(int idEncomienda) throws SQLException {
-        String sql = "SELECT * FROM encomienda WHERE id_encomienda = ?";
-        Encomienda encomienda = null;
-
-        try (PreparedStatement myStatement = myConn.prepareStatement(sql)) {
-            myStatement.setInt(1, idEncomienda);
-            ResultSet myRs = myStatement.executeQuery();
-
-            if (myRs.next()) {
-               // encomienda = new Encomienda();
-               // encomienda.setIdEncomienda(myRs.getInt("id_encomienda"));
-               // encomienda.setPrecioEncomienda(myRs.getFloat("precio_encomienda"));
-            }
-        }
-        return encomienda;
     }
 
     @Override
@@ -106,5 +97,10 @@ public class FacturaRepository implements Repository<Factura> {
     @Override
     public void update(Integer id, Factura t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Factura getById(Integer id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
