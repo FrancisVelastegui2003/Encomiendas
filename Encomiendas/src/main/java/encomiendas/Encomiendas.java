@@ -1,16 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package encomiendas;
 
-/**
- *
- * @author Richard
- */
+import encomiendas.views.transporte.JFRuta;
+import encomiendas.views.transporte.JFTransporte;
+
+
 public class Encomiendas {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        JFTransporte transporte = new JFTransporte();
+        transporte.setVisible(true);
+        transporte.setResizable(false);
+        transporte.setLocationRelativeTo(null);
     }
 }
